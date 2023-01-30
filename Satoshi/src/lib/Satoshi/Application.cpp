@@ -5,10 +5,12 @@
 Satoshi::Application::Application()
 {
 	Console::Init();
+	m_Window.reset(Window::Create());
 }
 
 Satoshi::Application::~Application()
 {
+	m_Window.reset();
 	Console::End();
 }
 
@@ -18,7 +20,8 @@ void Satoshi::Application::Run()
 	Console::CoreLog("Hello, this Engine will first support {0}, but soon I will add {1}, {2} and {3}","GL4","D3D11","VK","D3D12");
 	WindowResizeEvent e(1280, 720);
 	Console::Log(e.ToString());
-	while (true)
+	while (!m_Window->ShouldClose())
 	{
+		m_Window->OnUpdate();
 	}
 }

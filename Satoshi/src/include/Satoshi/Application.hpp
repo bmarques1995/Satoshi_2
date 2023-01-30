@@ -2,6 +2,8 @@
 #define APPLICATION_HPP
 
 #include "Core.hpp"
+#include "Window.hpp"
+#include <stpch.hpp>
 
 namespace Satoshi
 {
@@ -13,7 +15,7 @@ namespace Satoshi
 
         void Run();
     private:
-
+        std::unique_ptr<Window> m_Window;
     };
 
     Application* CreateApplication();
