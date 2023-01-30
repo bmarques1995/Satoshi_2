@@ -1,7 +1,7 @@
 #ifdef ST_PLATFORM_WINDOWS
 
-#include "Platform/Windows/Win32Input.hpp"
-#include "Platform/Windows/Win32InputMapper.hpp"
+#include "Platform/Window/Win32/Win32Input.hpp"
+#include "Platform/Window/Win32/Win32InputMapper.hpp"
 #include "Satoshi/Application.hpp"
 #include <windows.h>
 

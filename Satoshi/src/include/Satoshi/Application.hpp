@@ -11,6 +11,7 @@
 
 #include "LayerStack.hpp"
 #include "ImGUI/ImGUILayer.hpp"
+#include "Platform/Window/Win32/Win32ImGUILayer.hpp"
 
 namespace Satoshi
 {
@@ -38,6 +39,7 @@ namespace Satoshi
         LayerStack m_LayerStack;
 
         ImGUILayer m_ImGUILayer;
+        Win32ImGUILayer m_WindowLayer;
     };
 
     Application* CreateApplication();

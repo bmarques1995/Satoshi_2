@@ -1,5 +1,5 @@
 #include "Satoshi/Window.hpp"
-#include "Platform/Windows/Win32Window.hpp"
+#include "Platform/Window/Win32/Win32Window.hpp"
 
 Satoshi::Window* Satoshi::Window::Create(const WindowProps& props)
 {

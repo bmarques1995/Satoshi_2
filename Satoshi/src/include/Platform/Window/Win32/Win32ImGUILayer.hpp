@@ -1,23 +1,23 @@
-#ifndef IMGUI_LAYER_HPP
-#define IMGUI_LAYER_HPP
+#ifndef WIN32_IMGUI_LAYER_HPP
+#define WIN32_IMGUI_LAYER_HPP
 
-#include "Satoshi/Layer.hpp"
+#include "Satoshi/ImGUI/WindowImGUILayer.hpp"
 
 namespace Satoshi
 {
-    class ImGUILayer : public Layer
+    class Win32ImGUILayer : public WindowImGUILayer
     {
     public:
-        ImGUILayer();
-        ~ImGUILayer();
+        Win32ImGUILayer();
+        ~Win32ImGUILayer();
 
         virtual void OnAttach() override;
         virtual void OnDetach() override;
         virtual void OnUpdate() override;
         virtual void OnEvent(Event& e) override;
 
-        virtual void BeginFrame();
-        virtual void EndFrame();
+        virtual void BeginFrame() override;
+        virtual void EndFrame() override;
     private:
         bool show_demo_window = true;
     };

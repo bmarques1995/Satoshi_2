@@ -1,6 +1,6 @@
 #ifdef ST_PLATFORM_WINDOWS
 
-#include "Platform/Windows/Win32Window.hpp"
+#include "Platform/Window/Win32/Win32Window.hpp"
 #include "Satoshi/Events/ApplicationEvent.hpp"
 #include "Satoshi/Events/KeyEvent.hpp"
 #include "Satoshi/Events/MouseEvent.hpp"

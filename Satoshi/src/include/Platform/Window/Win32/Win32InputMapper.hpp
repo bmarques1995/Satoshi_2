@@ -3,6 +3,7 @@
 #ifndef WIN32_INPUT_MAPPER_HPP
 #define WIN32_INPUT_MAPPER_HPP
 
+#include <stpch.hpp>
 #include <Satoshi/InputCodes.hpp>
 
 namespace Satoshi

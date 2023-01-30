@@ -11,10 +11,12 @@ Satoshi::Application::Application()
 	m_Window.reset(Window::Create());
 	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 	m_ImGUILayer.OnAttach();
+	m_WindowLayer.OnAttach();
 }
 
 Satoshi::Application::~Application()
 {
+	m_WindowLayer.OnDetach();
 	m_ImGUILayer.OnDetach();
 	m_Window.reset();
 	Console::End();
@@ -30,12 +32,17 @@ void Satoshi::Application::Run()
 	{
 		m_Window->OnUpdate();
 
+		m_WindowLayer.BeginFrame();
+		m_ImGUILayer.BeginFrame();
 		m_ImGUILayer.OnUpdate();
 		
 		for (Layer* layer : m_LayerStack)
 		{
 			layer->OnUpdate();
 		}
+
+		m_ImGUILayer.EndFrame();
+		m_WindowLayer.EndFrame();
 
 		m_Window->Present();
 	}
