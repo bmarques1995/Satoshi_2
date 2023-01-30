@@ -10,8 +10,7 @@
 #include <tchar.h>
 #include <stdbool.h>
 
-#include <glad/wgl.h>
-#include <glad/wglext.h>
+
 
 namespace Satoshi
 {
@@ -39,7 +38,6 @@ namespace Satoshi
         virtual void SetEventCallback(const EventCallbackFn& callback) override;
 
         virtual std::any GetNativeWindow() const override;
-        virtual void Present() const override;
         //This responsability should be passed to the device context(in openGL isn't obvious the reason, it become visible in D3D11)
         virtual void SetVSync(bool enabled) override;
         virtual bool IsVSync() const override;
@@ -47,13 +45,7 @@ namespace Satoshi
 
         void CreateWindowClass(HINSTANCE* instance);
         static void AdjustDimensions(LPRECT originalDimensions, DWORD flags);
-        void InitOpenGL();
 
-#pragma region OGL
-        HDC m_HDC;
-        HGLRC m_HRC;
-        PFNWGLSWAPINTERVALEXTPROC SwapIntervalEXT;
-#pragma endregion
 
         HWND m_WindowHandle;
         WNDCLASSEXW m_WindowClass = { 0 };

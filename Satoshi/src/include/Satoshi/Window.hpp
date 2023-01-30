@@ -37,7 +37,6 @@ namespace Satoshi
         virtual uint32_t GetHeight() const = 0;
 
         virtual std::any GetNativeWindow() const = 0;
-        virtual void Present() const = 0;
 
         virtual bool ShouldClose() const = 0;
         virtual void SetCloseState(bool value) = 0;

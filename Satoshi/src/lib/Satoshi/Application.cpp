@@ -10,6 +10,7 @@ Satoshi::Application::Application()
 	Console::Init();
 	m_Window.reset(Window::Create());
 	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+	m_Context.reset(new GL4Context());
 	m_ImGUILayer.OnAttach();
 	m_WindowLayer.OnAttach();
 }
@@ -18,6 +19,7 @@ Satoshi::Application::~Application()
 {
 	m_WindowLayer.OnDetach();
 	m_ImGUILayer.OnDetach();
+	m_Context.reset();
 	m_Window.reset();
 	Console::End();
 }
@@ -31,6 +33,7 @@ void Satoshi::Application::Run()
 	while (!m_Window->ShouldClose())
 	{
 		m_Window->OnUpdate();
+		m_Context->Update();
 
 		m_WindowLayer.BeginFrame();
 		m_ImGUILayer.BeginFrame();
@@ -44,7 +47,7 @@ void Satoshi::Application::Run()
 		m_ImGUILayer.EndFrame();
 		m_WindowLayer.EndFrame();
 
-		m_Window->Present();
+		m_Context->Present();
 	}
 }
 

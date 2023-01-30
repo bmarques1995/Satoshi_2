@@ -12,6 +12,7 @@
 #include "LayerStack.hpp"
 #include "ImGUI/ImGUILayer.hpp"
 #include "Platform/Window/Win32/Win32ImGUILayer.hpp"
+#include "Platform/Graphics/GL4/GL4Context.hpp"
 
 namespace Satoshi
 {
@@ -36,6 +37,7 @@ namespace Satoshi
         bool OnWindowClose(WindowCloseEvent& e);
 
         std::unique_ptr<Window> m_Window;
+        std::unique_ptr<GraphicsContext> m_Context;
         LayerStack m_LayerStack;
 
         ImGUILayer m_ImGUILayer;

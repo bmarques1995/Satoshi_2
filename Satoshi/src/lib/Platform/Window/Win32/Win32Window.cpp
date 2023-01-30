@@ -49,8 +49,6 @@ Satoshi::Win32Window::Win32Window(const WindowProps& props)
 
     ShowWindow(m_WindowHandle, cmdShow);
     UpdateWindow(m_WindowHandle);
-
-    InitOpenGL();
 }
 
 Satoshi::Win32Window::~Win32Window()
@@ -66,8 +64,7 @@ void Satoshi::Win32Window::OnUpdate()
         ::TranslateMessage(&m_MSG);
         ::DispatchMessage(&m_MSG);
     }
-    glClearColor(1.0f,.0f,.3f,1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    
 }
 
 uint32_t Satoshi::Win32Window::GetWidth() const
@@ -98,13 +95,6 @@ void Satoshi::Win32Window::SetEventCallback(const EventCallbackFn& callback)
 std::any Satoshi::Win32Window::GetNativeWindow() const
 {
     return m_WindowHandle;
-}
-
-void Satoshi::Win32Window::Present() const
-{
-    if(SwapIntervalEXT)
-        SwapIntervalEXT(1);
-    SwapBuffers(m_HDC);
 }
 
 void Satoshi::Win32Window::SetVSync(bool enabled)
@@ -256,51 +246,6 @@ void Satoshi::Win32Window::CreateWindowClass(HINSTANCE* instance)
 void Satoshi::Win32Window::AdjustDimensions(LPRECT originalDimensions, DWORD flags)
 {
     AdjustWindowRectEx(originalDimensions, flags, 0, 0);
-}
-
-void Satoshi::Win32Window::InitOpenGL()
-{
-    m_HDC = GetDC(m_WindowHandle);
-    assert(m_HDC != nullptr);
-    // Set the pixel format for the device context:
-    PIXELFORMATDESCRIPTOR pfd = { };
-    pfd.nSize = sizeof(pfd);
-    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);  // Set the size of the PFD to the size of the class
-    pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW;   // Enable double buffering, opengl support and drawing to a window
-    pfd.iPixelType = PFD_TYPE_RGBA; // Set our application to use RGBA pixels
-    pfd.cColorBits = 32;        // Give us 32 bits of color information (the higher, the more colors)
-    pfd.cDepthBits = 32;        // Give us 32 bits of depth information (the higher, the more depth levels)
-    pfd.iLayerType = PFD_MAIN_PLANE;    // Set the layer of the PFD
-    int format = ChoosePixelFormat(m_HDC, &pfd);
-    assert(format != 0 && SetPixelFormat(m_HDC, format, &pfd) != FALSE);
-    // Create and enable a temporary (helper) opengl context:
-    HGLRC temp_context = NULL;
-    assert(nullptr != (temp_context = wglCreateContext(m_HDC)));
-    wglMakeCurrent(m_HDC, temp_context);
-
-    // Load WGL Extensions:
-    gladLoaderLoadWGL(m_HDC);
-
-    // Set the desired OpenGL version:
-    int attributes[] = {
-        WGL_CONTEXT_MAJOR_VERSION_ARB, 4,   // Set the MAJOR version of OpenGL to 3
-        WGL_CONTEXT_MINOR_VERSION_ARB, 5,   // Set the MINOR version of OpenGL to 2
-        WGL_CONTEXT_FLAGS_ARB,
-        WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB, // Set our OpenGL context to be forward compatible
-        0
-    };
-
-    auto wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
-    // Create the final opengl context and get rid of the temporary one:
-    HGLRC opengl_context = NULL;
-    assert(nullptr != (opengl_context = wglCreateContextAttribsARB(m_HDC, NULL, attributes)));
-    wglMakeCurrent(NULL, NULL); // Remove the temporary context from being active
-    wglDeleteContext(temp_context); // Delete the temporary OpenGL context
-    wglMakeCurrent(m_HDC, opengl_context);    // Make our OpenGL 3.2 context current
-
-    SwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
-    // Glad Loader!
-    assert(gladLoaderLoadGL());
 }
 
 #endif // ST_PLATFORM_WINDOWS
