@@ -8,6 +8,7 @@
 
 namespace Satoshi
 {
+    using EventCallbackFn = std::function<void(Event&)>;
     struct WindowProps
     {
         std::string Title;
@@ -28,8 +29,6 @@ namespace Satoshi
     class SATOSHI_API Window
     {
     public:
-        using EventCallbackFn = std::function<void(Event&)>;
-
         virtual ~Window() {}
         
         virtual void OnUpdate() = 0;
@@ -38,6 +37,7 @@ namespace Satoshi
         virtual uint32_t GetHeight() const = 0;
 
         virtual bool ShouldClose() const = 0;
+        virtual void SetCloseState(bool value) = 0;
 
         virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
         //This responsability should be passed to the device context(in openGL isn't obvious the reason, it become visible in D3D11)

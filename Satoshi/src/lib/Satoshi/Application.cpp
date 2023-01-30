@@ -6,6 +6,7 @@ Satoshi::Application::Application()
 {
 	Console::Init();
 	m_Window.reset(Window::Create());
+	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
 }
 
 Satoshi::Application::~Application()
@@ -24,4 +25,17 @@ void Satoshi::Application::Run()
 	{
 		m_Window->OnUpdate();
 	}
+}
+
+void Satoshi::Application::OnEvent(Event& e)
+{
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+	Console::Log(e.ToString());
+}
+
+bool Satoshi::Application::OnWindowClose(WindowCloseEvent& e)
+{
+	m_Window->SetCloseState(true);
+	return true;
 }

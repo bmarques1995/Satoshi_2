@@ -8,6 +8,13 @@
 
 namespace Satoshi
 {
+    struct WindowData
+    {
+        std::wstring Title;
+        bool VSync;
+        uint32_t Width, Height;
+        EventCallbackFn EventCallback;
+    };
     class Win32Window : public Window
     {
     public:
@@ -20,6 +27,7 @@ namespace Satoshi
         virtual uint32_t GetHeight() const override;
 
         virtual bool ShouldClose() const override;
+        virtual void SetCloseState(bool value) override;
 
         virtual void SetEventCallback(const EventCallbackFn& callback) override;
         //This responsability should be passed to the device context(in openGL isn't obvious the reason, it become visible in D3D11)
@@ -34,12 +42,10 @@ namespace Satoshi
         WNDCLASSEXW m_WindowClass = { 0 };
         MSG m_MSG = { 0 };
 
-        std::wstring m_Title;
-        bool m_VSync;
-        uint32_t m_Width, m_Height;
+        WindowData m_WindowData;
         bool m_ShouldClose;
 
-        EventCallbackFn m_EventCallback;
+        
     };
 }
 
