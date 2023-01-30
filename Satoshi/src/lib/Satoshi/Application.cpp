@@ -2,15 +2,20 @@
 #include "Satoshi/Console.hpp"
 #include "Satoshi/Events/ApplicationEvent.hpp"
 
+Satoshi::Application* Satoshi::Application::s_Instance = nullptr;
+
 Satoshi::Application::Application()
 {
+	s_Instance = this;
 	Console::Init();
 	m_Window.reset(Window::Create());
 	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
+	m_ImGUILayer.OnAttach();
 }
 
 Satoshi::Application::~Application()
 {
+	m_ImGUILayer.OnDetach();
 	m_Window.reset();
 	Console::End();
 }
@@ -25,10 +30,14 @@ void Satoshi::Application::Run()
 	{
 		m_Window->OnUpdate();
 
+		m_ImGUILayer.OnUpdate();
+		
 		for (Layer* layer : m_LayerStack)
 		{
 			layer->OnUpdate();
 		}
+
+		m_Window->Present();
 	}
 }
 

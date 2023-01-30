@@ -10,6 +10,7 @@
 #include "Satoshi/Events/MouseEvent.hpp"
 
 #include "LayerStack.hpp"
+#include "ImGUI/ImGUILayer.hpp"
 
 namespace Satoshi
 {
@@ -25,11 +26,18 @@ namespace Satoshi
 
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
-    private:
+
+        Window* GetWindow() { return m_Window.get(); }
+        inline static Application* GetInstance() { return s_Instance; }
+    
+    private:    
+        static Application* s_Instance;
         bool OnWindowClose(WindowCloseEvent& e);
 
         std::unique_ptr<Window> m_Window;
         LayerStack m_LayerStack;
+
+        ImGUILayer m_ImGUILayer;
     };
 
     Application* CreateApplication();

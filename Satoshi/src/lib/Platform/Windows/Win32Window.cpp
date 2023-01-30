@@ -4,6 +4,8 @@
 #include "Satoshi/Events/ApplicationEvent.hpp"
 #include "Satoshi/Events/KeyEvent.hpp"
 #include "Satoshi/Events/MouseEvent.hpp"
+#include "imgui.h"
+#include "backends/imgui_impl_win32.h"
 
 Satoshi::Win32Window::Win32Window(const WindowProps& props)
 {
@@ -66,9 +68,6 @@ void Satoshi::Win32Window::OnUpdate()
     }
     glClearColor(1.0f,.0f,.3f,1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    SwapIntervalEXT(1);
-    SwapBuffers(m_HDC);
 }
 
 uint32_t Satoshi::Win32Window::GetWidth() const
@@ -96,6 +95,18 @@ void Satoshi::Win32Window::SetEventCallback(const EventCallbackFn& callback)
     m_WindowData.EventCallback = callback;
 }
 
+std::any Satoshi::Win32Window::GetNativeWindow() const
+{
+    return m_WindowHandle;
+}
+
+void Satoshi::Win32Window::Present() const
+{
+    if(SwapIntervalEXT)
+        SwapIntervalEXT(1);
+    SwapBuffers(m_HDC);
+}
+
 void Satoshi::Win32Window::SetVSync(bool enabled)
 {
     m_WindowData.VSync = enabled;
@@ -105,6 +116,8 @@ bool Satoshi::Win32Window::IsVSync() const
 {
 	return m_WindowData.VSync;
 }
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 void Satoshi::Win32Window::CreateWindowClass(HINSTANCE* instance)
 {
@@ -126,6 +139,11 @@ void Satoshi::Win32Window::CreateWindowClass(HINSTANCE* instance)
         //window close
 
         WindowData* data = (WindowData*)GetWindowLongPtr(hWnd, 0);
+
+        if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+            return true;
+        if (msg == WM_NCCREATE)
+            return DefWindowProcW(hWnd, msg, wParam, lParam);
 
         switch (msg)
         {

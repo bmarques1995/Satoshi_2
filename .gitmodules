@@ -4,3 +4,9 @@
 [submodule "Satoshi/vendor/glad"]
 	path = Satoshi/vendor/glad
 	url = https://github.com/bmarques1995/glad.git
+[submodule "Satoshi/vendor/imgui/imgui"]
+	path = Satoshi/vendor/imgui/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "Satoshi/vendor/eigen3"]
+	path = Satoshi/vendor/eigen3
+	url = https://gitlab.com/libeigen/eigen.git

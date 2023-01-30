@@ -12,6 +12,7 @@ file(GLOB_RECURSE SANDBOX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "Sandbox/
 set(SATOSHI_LIBS 
     spdlogd
     glad
+    imgui
 )
 
 set(WIN32_ARG)
@@ -31,7 +32,7 @@ set(WIN32_ARG WIN32)
 endif()
 
 add_library(Satoshi SHARED ${SATOSHI_HEADERS} ${SATOSHI_SOURCES})
-target_include_directories(Satoshi PRIVATE "Satoshi/src/include" "Satoshi/vendor/spdlog/include" "./install/include")
+target_include_directories(Satoshi PRIVATE "Satoshi/src/include" "Satoshi/vendor/spdlog/include" "./install/include" "./install/include/imgui" "./install/include/eigen3")
 target_link_directories(Satoshi PRIVATE "./install/lib")
 target_link_libraries(Satoshi PRIVATE ${SATOSHI_LIBS})
 target_compile_definitions(Satoshi PRIVATE ST_BUILD_DLL)
@@ -42,8 +43,8 @@ if(WIN32)
     
     target_compile_definitions(Satoshi PRIVATE ST_PLATFORM_WINDOWS)
     target_precompile_headers(Satoshi PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Satoshi/src/include/stpch.hpp")
-    target_compile_definitions(Sandbox PRIVATE ST_PLATFORM_WINDOWS)
+    target_compile_definitions(Sandbox PRIVATE ST_PLATFORM_WINDOWS WIN32_LEAN_AND_MEAN)
 endif()
-target_include_directories(Sandbox PRIVATE "Satoshi/src/include" "Sandbox/src/include" "./install/include")
+target_include_directories(Sandbox PRIVATE "Satoshi/src/include" "Sandbox/src/include" "./install/include" "./install/include/eigen3")
 
 target_link_libraries(Sandbox PRIVATE Satoshi)

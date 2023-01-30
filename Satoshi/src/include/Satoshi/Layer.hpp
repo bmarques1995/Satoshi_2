@@ -3,6 +3,7 @@
 
 #include <stpch.hpp>
 #include "Events/Event.hpp"
+#include <Eigen/Dense>
 
 namespace Satoshi
 {

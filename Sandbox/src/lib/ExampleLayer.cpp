@@ -11,7 +11,8 @@ ExampleLayer::~ExampleLayer()
 
 void ExampleLayer::OnUpdate()
 {
-	Satoshi::Console::Debug("New Extern Layer");
+	if(Satoshi::Input::IsKeyPressed(ST_KEY_A))
+		Satoshi::Console::Debug("Testing the input");
 }
 
 void ExampleLayer::OnEvent(Satoshi::Event& e)
