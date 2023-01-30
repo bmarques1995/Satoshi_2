@@ -11,6 +11,7 @@ file(GLOB_RECURSE SANDBOX_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "Sandbox/
 
 set(SATOSHI_LIBS 
     spdlogd
+    glad
 )
 
 set(WIN32_ARG)
@@ -23,15 +24,11 @@ d3d12
 dxgi
 dxguid
 d3dcompiler
+opengl32
 )
 
 set(WIN32_ARG WIN32)
 endif()
-
-message("<wrapper>")
-message(${WIN32_ARG})
-message("</wrapper>")
-
 
 add_library(Satoshi SHARED ${SATOSHI_HEADERS} ${SATOSHI_SOURCES})
 target_include_directories(Satoshi PRIVATE "Satoshi/src/include" "Satoshi/vendor/spdlog/include" "./install/include")

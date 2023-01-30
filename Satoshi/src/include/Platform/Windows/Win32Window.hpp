@@ -4,7 +4,14 @@
 #define WIN32_WINDOW_HPP
 
 #include "Satoshi/Window.hpp"
+
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <tchar.h>
+#include <stdbool.h>
+
+#include <glad/wgl.h>
+#include <glad/wglext.h>
 
 namespace Satoshi
 {
@@ -37,6 +44,13 @@ namespace Satoshi
 
         void CreateWindowClass(HINSTANCE* instance);
         static void AdjustDimensions(LPRECT originalDimensions, DWORD flags);
+        void InitOpenGL();
+
+#pragma region OGL
+        HDC m_HDC;
+        HGLRC m_HRC;
+        PFNWGLSWAPINTERVALEXTPROC SwapIntervalEXT;
+#pragma endregion
 
         HWND m_WindowHandle;
         WNDCLASSEXW m_WindowClass = { 0 };

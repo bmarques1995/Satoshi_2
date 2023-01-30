@@ -24,6 +24,11 @@ void Satoshi::Application::Run()
 	while (!m_Window->ShouldClose())
 	{
 		m_Window->OnUpdate();
+
+		for (Layer* layer : m_LayerStack)
+		{
+			layer->OnUpdate();
+		}
 	}
 }
 
@@ -32,6 +37,24 @@ void Satoshi::Application::OnEvent(Event& e)
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
 	Console::Log(e.ToString());
+
+	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+	{
+		--it;
+		(*it)->OnEvent(e);
+		if (e.Handled)
+			break;
+	}
+}
+
+void Satoshi::Application::PushLayer(Layer* layer)
+{
+	m_LayerStack.PushLayer(layer);
+}
+
+void Satoshi::Application::PushOverlay(Layer* overlay)
+{
+	m_LayerStack.PushOverlay(overlay);
 }
 
 bool Satoshi::Application::OnWindowClose(WindowCloseEvent& e)
