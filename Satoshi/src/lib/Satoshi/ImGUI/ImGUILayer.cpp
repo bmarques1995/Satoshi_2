@@ -3,7 +3,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_win32.h"
 
-#include <Satoshi/Application.hpp>
+#include <Satoshi/Core/Application.hpp>
 #include <windows.h>
 
 Satoshi::ImGUILayer::ImGUILayer() :

@@ -2,7 +2,7 @@
 #define MOUSE_EVENT_HPP
 
 #include "Satoshi/Events/Event.hpp"
-#include "Satoshi/MouseCodes.hpp"
+#include "Satoshi/Window/MouseCodes.hpp"
 
 #include <sstream>
 

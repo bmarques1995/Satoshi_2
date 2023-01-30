@@ -1,4 +1,4 @@
-#include "Satoshi/Input.hpp"
+#include "Satoshi/Window/Input.hpp"
 #include "Platform/Window/Win32/Win32Input.hpp"
 
 #ifdef ST_PLATFORM_WINDOWS

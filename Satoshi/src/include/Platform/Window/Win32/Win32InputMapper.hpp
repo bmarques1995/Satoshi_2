@@ -4,7 +4,7 @@
 #define WIN32_INPUT_MAPPER_HPP
 
 #include <stpch.hpp>
-#include <Satoshi/InputCodes.hpp>
+#include <Satoshi/Window/InputCodes.hpp>
 
 namespace Satoshi
 {

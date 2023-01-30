@@ -1,5 +1,5 @@
-#include "Satoshi/Application.hpp"
-#include "Satoshi/Console.hpp"
+#include "Satoshi/Core/Application.hpp"
+#include "Satoshi/Core/Console.hpp"
 #include "Satoshi/Events/ApplicationEvent.hpp"
 
 Satoshi::Application* Satoshi::Application::s_Instance = nullptr;
@@ -10,14 +10,18 @@ Satoshi::Application::Application()
 	Console::Init();
 	m_Window.reset(Window::Create());
 	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-	m_Context.reset(new GL4Context());
+	m_WindowLayer.reset(new Win32ImGUILayer());
+	m_Context.reset(new D3D11Context());
+	m_ContextLayer.reset(new D3D11ImGUILayer());
 	m_ImGUILayer.OnAttach();
-	m_WindowLayer.OnAttach();
+	m_WindowLayer->OnAttach();
+	m_ContextLayer->OnAttach();
 }
 
 Satoshi::Application::~Application()
 {
-	m_WindowLayer.OnDetach();
+	m_ContextLayer->OnDetach();
+	m_WindowLayer->OnDetach();
 	m_ImGUILayer.OnDetach();
 	m_Context.reset();
 	m_Window.reset();
@@ -35,7 +39,8 @@ void Satoshi::Application::Run()
 		m_Window->OnUpdate();
 		m_Context->Update();
 
-		m_WindowLayer.BeginFrame();
+		m_ContextLayer->BeginFrame();
+		m_WindowLayer->BeginFrame();
 		m_ImGUILayer.BeginFrame();
 		m_ImGUILayer.OnUpdate();
 		
@@ -45,7 +50,8 @@ void Satoshi::Application::Run()
 		}
 
 		m_ImGUILayer.EndFrame();
-		m_WindowLayer.EndFrame();
+		m_WindowLayer->EndFrame();
+		m_ContextLayer->EndFrame();
 
 		m_Context->Present();
 	}

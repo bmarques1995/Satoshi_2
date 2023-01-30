@@ -3,7 +3,7 @@
 #ifndef WIN32_WINDOW_HPP
 #define WIN32_WINDOW_HPP
 
-#include "Satoshi/Window.hpp"
+#include "Satoshi/Window/Window.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

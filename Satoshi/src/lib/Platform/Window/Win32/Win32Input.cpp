@@ -2,7 +2,7 @@
 
 #include "Platform/Window/Win32/Win32Input.hpp"
 #include "Platform/Window/Win32/Win32InputMapper.hpp"
-#include "Satoshi/Application.hpp"
+#include "Satoshi/Core/Application.hpp"
 #include <windows.h>
 
 bool Satoshi::Win32Input::IsKeyPressedImpl(uint32_t keycode)

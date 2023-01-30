@@ -17,6 +17,8 @@ if(WIN32)
 
 set(BUILD_IMGUI_FILES ${BUILD_IMGUI_FILES}
     ./imgui/backends/imgui_impl_win32.cpp 
+    ./imgui/backends/imgui_impl_dx11.cpp 
+    ./imgui/backends/imgui_impl_dx12.cpp 
 )
 
 endif()
@@ -39,7 +41,9 @@ PATTERN imgui_impl_opengl3.h)
 
 if(WIN32)
     install(DIRECTORY imgui/backends/ DESTINATION ${CMAKE_INSTALL_PREFIX}/include/imgui/backends FILES_MATCHING
-    PATTERN imgui_impl_win32.h)
+    PATTERN imgui_impl_win32.h
+    PATTERN imgui_impl_dx11.h
+    PATTERN imgui_impl_dx12.h)
 endif()
 
 install(TARGETS imgui RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})

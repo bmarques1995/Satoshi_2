@@ -1,7 +1,7 @@
 #ifndef EVENT_HPP
 #define EVENT_HPP
 
-#include "Satoshi/Core.hpp"
+#include "Satoshi/Core/Core.hpp"
 #include <functional>
 #include <string>
 #include <iostream>

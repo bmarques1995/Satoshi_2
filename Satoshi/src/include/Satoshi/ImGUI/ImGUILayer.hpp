@@ -1,7 +1,7 @@
 #ifndef IMGUI_LAYER_HPP
 #define IMGUI_LAYER_HPP
 
-#include "Satoshi/Layer.hpp"
+#include "Satoshi/Core/Layer.hpp"
 
 namespace Satoshi
 {

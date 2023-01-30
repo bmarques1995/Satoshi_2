@@ -2,7 +2,7 @@
 #define APPLICATION_HPP
 
 #include "Core.hpp"
-#include "Window.hpp"
+#include "Satoshi/Window/Window.hpp"
 #include <stpch.hpp>
 
 #include "Satoshi/Events/ApplicationEvent.hpp"
@@ -10,9 +10,12 @@
 #include "Satoshi/Events/MouseEvent.hpp"
 
 #include "LayerStack.hpp"
-#include "ImGUI/ImGUILayer.hpp"
+#include "Satoshi/ImGUI/ImGUILayer.hpp"
 #include "Platform/Window/Win32/Win32ImGUILayer.hpp"
+#include "Platform/Graphics/GL4/GL4ImGUILayer.hpp"
+#include "Platform/Graphics/D3D11/D3D11ImGUILayer.hpp"
 #include "Platform/Graphics/GL4/GL4Context.hpp"
+#include "Platform/Graphics/D3D11/D3D11Context.hpp"
 
 namespace Satoshi
 {
@@ -30,6 +33,7 @@ namespace Satoshi
         void PushOverlay(Layer* overlay);
 
         Window* GetWindow() { return m_Window.get(); }
+        GraphicsContext* GetContext() { return m_Context.get(); }
         inline static Application* GetInstance() { return s_Instance; }
     
     private:    
@@ -41,7 +45,8 @@ namespace Satoshi
         LayerStack m_LayerStack;
 
         ImGUILayer m_ImGUILayer;
-        Win32ImGUILayer m_WindowLayer;
+        std::unique_ptr<WindowImGUILayer> m_WindowLayer;
+        std::unique_ptr<ContextImGUILayer> m_ContextLayer;
     };
 
     Application* CreateApplication();

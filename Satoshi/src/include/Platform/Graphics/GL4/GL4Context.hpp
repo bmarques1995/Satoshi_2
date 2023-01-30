@@ -17,8 +17,11 @@ namespace Satoshi
         virtual void Update() override;
 
         virtual void SetClearColor(float r, float g, float b, float a) override;
+        virtual std::any GetImGUIData() override;
     private:
         float m_ClearColor[4];
+
+        std::string m_GLSLImGUIVersion;
 
         HDC m_HDC;
         HGLRC m_HRC;

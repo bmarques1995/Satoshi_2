@@ -3,7 +3,7 @@
 
 #include <stpch.hpp>
 
-#include "Satoshi/Core.hpp"
+#include "Satoshi/Core/Core.hpp"
 #include "Satoshi/Events/Event.hpp"
 
 namespace Satoshi

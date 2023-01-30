@@ -2,7 +2,7 @@
 #define KEY_EVENT_HPP
 
 #include "Satoshi/Events/Event.hpp"
-#include "Satoshi/KeyCodes.hpp"
+#include "Satoshi/Window/KeyCodes.hpp"
 
 #include <sstream>
 

@@ -3,7 +3,7 @@
 #ifndef WIN32_INPUT_HPP
 #define WIN32_INPUT_HPP
 
-#include "Satoshi/Input.hpp"
+#include "Satoshi/Window/Input.hpp"
 
 namespace Satoshi
 {

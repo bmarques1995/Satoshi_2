@@ -1,11 +1,11 @@
 #ifndef SATOSHI_HPP
 #define SATOSHI_HPP
 
-#include "Satoshi/Application.hpp"
-#include "Satoshi/Layer.hpp"
-#include "Satoshi/Console.hpp"
-#include "Satoshi/Input.hpp"
-#include "Satoshi/InputCodes.hpp"
+#include "Satoshi/Core/Application.hpp"
+#include "Satoshi/Core/Layer.hpp"
+#include "Satoshi/Core/Console.hpp"
+#include "Satoshi/Window/Input.hpp"
+#include "Satoshi/Window/InputCodes.hpp"
 #include <Eigen/Dense>
 
 #endif //SATOSHI_HPP

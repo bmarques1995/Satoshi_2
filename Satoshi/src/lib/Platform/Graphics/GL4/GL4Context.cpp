@@ -1,6 +1,6 @@
 #include "Platform/Graphics/GL4/GL4Context.hpp"
 #include <cassert>
-#include "Satoshi/Application.hpp"
+#include "Satoshi/Core/Application.hpp"
 
 Satoshi::GL4Context::GL4Context()
 {
@@ -50,6 +50,7 @@ Satoshi::GL4Context::GL4Context()
     SwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
     // Glad Loader!
     assert(gladLoaderLoadGL());
+    m_GLSLImGUIVersion = "#version 410";
 }
 
 Satoshi::GL4Context::~GL4Context()
@@ -77,4 +78,9 @@ void Satoshi::GL4Context::SetClearColor(float r, float g, float b, float a)
     m_ClearColor[1] = g;
     m_ClearColor[2] = b;
     m_ClearColor[3] = a;
+}
+
+std::any Satoshi::GL4Context::GetImGUIData()
+{
+    return m_GLSLImGUIVersion;
 }

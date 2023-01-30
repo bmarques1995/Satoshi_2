@@ -1,4 +1,4 @@
-#include <Satoshi/Entrypoint.hpp>
+#include <Satoshi/Core/Entrypoint.hpp>
 #include "ExampleLayer.hpp"
 
 class Sandbox : public Satoshi::Application

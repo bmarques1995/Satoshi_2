@@ -1,7 +1,7 @@
 #ifndef INPUT_HPP
 #define INPUT_HPP
 
-#include "Satoshi/Core.hpp"
+#include "Satoshi/Core/Core.hpp"
 #include <stpch.hpp>
 
 namespace Satoshi

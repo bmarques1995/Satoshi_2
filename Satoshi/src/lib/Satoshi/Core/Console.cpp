@@ -1,4 +1,4 @@
-#include "Satoshi/Console.hpp"
+#include "Satoshi/Core/Console.hpp"
 
 std::shared_ptr<spdlog::logger> Satoshi::Console::s_CoreLogger;
 std::shared_ptr<spdlog::logger> Satoshi::Console::s_ClientLogger;
