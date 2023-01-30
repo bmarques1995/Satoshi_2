@@ -5,9 +5,14 @@
 
 #ifdef ST_PLATFORM_WINDOWS
 
+#include <windows.h>
+
 extern Satoshi::Application* Satoshi::CreateApplication();
 
-int main(int argc, char** argv)
+INT APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+	_In_opt_ HINSTANCE hPrevInstance,
+	_In_ LPWSTR lpCmdLine,
+	_In_ int nCmdShow)
 {
 
 	Satoshi::Application* app = Satoshi::CreateApplication();

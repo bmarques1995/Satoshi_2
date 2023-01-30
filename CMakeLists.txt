@@ -13,6 +13,8 @@ set(SATOSHI_LIBS
     spdlogd
 )
 
+set(WIN32_ARG)
+
 if(WIN32)
 set(SATOSHI_LIBS
 ${SATOSHI_LIBS}
@@ -22,15 +24,25 @@ dxgi
 dxguid
 d3dcompiler
 )
+
+set(WIN32_ARG WIN32)
 endif()
+
+message("<wrapper>")
+message(${WIN32_ARG})
+message("</wrapper>")
+
 
 add_library(Satoshi SHARED ${SATOSHI_HEADERS} ${SATOSHI_SOURCES})
 target_include_directories(Satoshi PRIVATE "Satoshi/src/include" "Satoshi/vendor/spdlog/include" "./install/include")
 target_link_directories(Satoshi PRIVATE "./install/lib")
 target_link_libraries(Satoshi PRIVATE ${SATOSHI_LIBS})
 target_compile_definitions(Satoshi PRIVATE ST_BUILD_DLL)
-add_executable(Sandbox ${SANDBOX_HEADERS} ${SANDBOX_SOURCES})
+
+add_executable(Sandbox ${WIN32_ARG} ${SANDBOX_HEADERS} ${SANDBOX_SOURCES})
+
 if(WIN32)
+    
     target_compile_definitions(Satoshi PRIVATE ST_PLATFORM_WINDOWS)
     target_precompile_headers(Satoshi PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/Satoshi/src/include/stpch.hpp")
     target_compile_definitions(Sandbox PRIVATE ST_PLATFORM_WINDOWS)
