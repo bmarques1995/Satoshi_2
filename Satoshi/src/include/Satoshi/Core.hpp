@@ -11,4 +11,6 @@
 	#error Satoshi only supports windows!
 #endif
 
+#define BIT(x) (1 << x)
+
 #endif // CORE_HPP
