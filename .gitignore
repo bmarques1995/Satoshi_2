@@ -40,6 +40,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 [Bb]in-int/
+[Dd]ependencies/
+[Ii]nstall/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
