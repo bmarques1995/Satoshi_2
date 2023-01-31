@@ -6,8 +6,8 @@
 
 Satoshi::D3D11Context::D3D11Context()
 {
-    m_ClearColor[0] = 1.0f;
-    m_ClearColor[1] = .7f;
+    m_ClearColor[0] = .6f;
+    m_ClearColor[1] = 1.0f;
     m_ClearColor[2] = .3f;
     m_ClearColor[3] = 1.0f;
 
@@ -92,7 +92,11 @@ void Satoshi::D3D11Context::Present()
     m_SwapChain->Present(1, 0);
 }
 
-void Satoshi::D3D11Context::Update()
+void Satoshi::D3D11Context::OnResize()
+{
+}
+
+void Satoshi::D3D11Context::ClearTarget()
 {
     m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), NULL);
     m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), m_ClearColor);
@@ -106,10 +110,30 @@ void Satoshi::D3D11Context::SetClearColor(float r, float g, float b, float a)
     m_ClearColor[3] = a;
 }
 
+void Satoshi::D3D11Context::ReceiveCommands()
+{
+}
+
+void Satoshi::D3D11Context::DispatchCommands()
+{
+}
+
+void Satoshi::D3D11Context::Draw(uint32_t elements)
+{
+}
+
+void Satoshi::D3D11Context::NewFrame()
+{
+}
+
+void Satoshi::D3D11Context::EndFrame()
+{
+}
+
 std::any Satoshi::D3D11Context::GetImGUIData()
 {
-    D3D11ImGUIData data = {m_Device.Get(), m_DeviceContext.Get()};
-    return data;
+    D3D11ImGUIData m_Data = {m_Device.Get(), m_DeviceContext.Get()};
+    return m_Data;
 }
 
 #endif

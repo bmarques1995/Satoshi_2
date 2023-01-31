@@ -2,6 +2,7 @@
 #include "Satoshi/Core/Console.hpp"
 #include "Satoshi/Events/ApplicationEvent.hpp"
 #include "Satoshi/Core/ApplicationStarter.hpp"
+#include "Platform/Graphics/VK/VKContext.hpp"
 
 Satoshi::Application* Satoshi::Application::s_Instance = nullptr;
 
@@ -42,7 +43,9 @@ void Satoshi::Application::Run()
 	while (!m_Window->ShouldClose())
 	{
 		m_Window->OnUpdate();
-		m_Context->Update();
+		m_Context->NewFrame();
+		m_Context->ReceiveCommands();
+		m_Context->ClearTarget();
 
 		m_ContextLayer->BeginFrame();
 		m_WindowLayer->BeginFrame();
@@ -58,7 +61,9 @@ void Satoshi::Application::Run()
 		m_WindowLayer->EndFrame();
 		m_ContextLayer->EndFrame();
 
+		m_Context->DispatchCommands();
 		m_Context->Present();
+		m_Context->EndFrame();
 	}
 }
 

@@ -6,7 +6,6 @@
 #include "Satoshi/Renderer/GraphicsContext.hpp"
 
 #include <d3d11_4.h>
-#include <dxgi.h>
 
 #include <wrl.h>
 
@@ -25,10 +24,17 @@ namespace Satoshi
         D3D11Context();
         ~D3D11Context();
 
-        virtual void Present() override;
-        virtual void Update() override;
-
+        virtual void ClearTarget() override;
         virtual void SetClearColor(float r, float g, float b, float a) override;
+        virtual void ReceiveCommands() override;
+        virtual void DispatchCommands() override;
+        virtual void Draw(uint32_t elements) override;
+        virtual void NewFrame() override;
+        virtual void EndFrame() override;
+        virtual void Present() override;
+
+        virtual void OnResize() override;
+
         virtual std::any GetImGUIData() override;
     private:
         float m_ClearColor[4];

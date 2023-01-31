@@ -72,7 +72,11 @@ void Satoshi::GL4Context::Present()
 #endif
 }
 
-void Satoshi::GL4Context::Update()
+void Satoshi::GL4Context::OnResize()
+{
+}
+
+void Satoshi::GL4Context::ClearTarget()
 {
     glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -84,6 +88,26 @@ void Satoshi::GL4Context::SetClearColor(float r, float g, float b, float a)
     m_ClearColor[1] = g;
     m_ClearColor[2] = b;
     m_ClearColor[3] = a;
+}
+
+void Satoshi::GL4Context::ReceiveCommands()
+{
+}
+
+void Satoshi::GL4Context::DispatchCommands()
+{
+}
+
+void Satoshi::GL4Context::Draw(uint32_t elements)
+{
+}
+
+void Satoshi::GL4Context::NewFrame()
+{
+}
+
+void Satoshi::GL4Context::EndFrame()
+{
 }
 
 std::any Satoshi::GL4Context::GetImGUIData()

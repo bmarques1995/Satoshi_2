@@ -13,6 +13,7 @@ set(SATOSHI_LIBS
     spdlogd
     glad
     imgui
+    vulkan-1
 )
 
 set(WIN32_ARG)
@@ -34,6 +35,7 @@ endif()
 add_library(Satoshi SHARED ${SATOSHI_HEADERS} ${SATOSHI_SOURCES})
 target_include_directories(Satoshi PRIVATE "Satoshi/src/include" "Satoshi/vendor/spdlog/include" "./install/include" "./install/include/imgui" "./install/include/eigen3")
 target_link_directories(Satoshi PRIVATE "./install/lib")
+target_link_directories(Satoshi PRIVATE "./install/bin")
 target_link_libraries(Satoshi PRIVATE ${SATOSHI_LIBS})
 target_compile_definitions(Satoshi PRIVATE ST_BUILD_DLL)
 

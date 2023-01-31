@@ -14,8 +14,8 @@ Satoshi::GL4ImGUILayer::~GL4ImGUILayer()
 
 void Satoshi::GL4ImGUILayer::OnAttach()
 {
-	std::string data = std::any_cast<std::string>(Application::GetInstance()->GetContext()->GetImGUIData());
-	ImGui_ImplOpenGL3_Init(data.c_str());
+	std::string m_Data = std::any_cast<std::string>(Application::GetInstance()->GetContext()->GetImGUIData());
+	ImGui_ImplOpenGL3_Init(m_Data.c_str());
 }
 
 void Satoshi::GL4ImGUILayer::OnDetach()

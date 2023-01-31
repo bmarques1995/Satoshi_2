@@ -10,11 +10,16 @@ namespace Satoshi
     class SATOSHI_API GraphicsContext
     {
     public:
-
-        virtual void Present() = 0;
-        virtual void Update() = 0;
-
+        virtual void ClearTarget() = 0;
         virtual void SetClearColor(float r, float g, float b, float a) = 0;
+        virtual void ReceiveCommands() = 0;
+        virtual void DispatchCommands() = 0;
+        virtual void Draw(uint32_t elements) = 0;
+        virtual void NewFrame() = 0;
+        virtual void EndFrame() = 0;
+        virtual void Present() = 0;
+
+        virtual void OnResize() = 0;
 
         virtual std::any GetImGUIData() = 0;
 

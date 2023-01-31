@@ -128,7 +128,7 @@ void Satoshi::Win32Window::CreateWindowClass(HINSTANCE* instance)
         //window resize
         //window close
 
-        WindowData* data = (WindowData*)GetWindowLongPtr(hWnd, 0);
+        WindowData* m_Data = (WindowData*)GetWindowLongPtr(hWnd, 0);
 
         if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
             return true;
@@ -142,97 +142,97 @@ void Satoshi::Win32Window::CreateWindowClass(HINSTANCE* instance)
             RECT clientArea;
             GetClientRect(hWnd, &clientArea);
             WindowResizeEvent e((unsigned)(clientArea.right - clientArea.left), (unsigned)(clientArea.bottom - clientArea.top));
-            data->Width = e.GetWidth();
-            data->Height = e.GetHeight();
-            data->EventCallback(e);
+            m_Data->Width = e.GetWidth();
+            m_Data->Height = e.GetHeight();
+            m_Data->EventCallback(e);
             break;
         }
         case WM_CLOSE:
         case WM_QUIT:
         {
             WindowCloseEvent e;
-            data->EventCallback(e);
+            m_Data->EventCallback(e);
             break;
         }
         case WM_KEYDOWN:
         {
             uint16_t repeated = (bool)(HIWORD(lParam) & KF_REPEAT);
             KeyPressedEvent event(static_cast<uint32_t>(wParam), repeated);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_KEYUP:
         {
             KeyReleasedEvent event(static_cast<uint32_t>(wParam));
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_CHAR:
         {
             KeyTypedEvent event(static_cast<uint32_t>(wParam));
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_LBUTTONDOWN:
         {
             MouseButtonPressedEvent event(0);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_MBUTTONDOWN:
         {
             MouseButtonPressedEvent event(2);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_RBUTTONDOWN:
         {
             MouseButtonPressedEvent event(1);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_XBUTTONDOWN:
         {
             MouseButtonPressedEvent event((unsigned)wParam);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_LBUTTONUP:
         {
             MouseButtonReleasedEvent event(0);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_MBUTTONUP:
         {
             MouseButtonReleasedEvent event(2);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_RBUTTONUP:
         {
             MouseButtonReleasedEvent event(1);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_XBUTTONUP:
         {
             MouseButtonReleasedEvent event((unsigned)wParam);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_MOUSEHWHEEL:
         {
             short delta = GET_WHEEL_DELTA_WPARAM(wParam);
             MouseScrolledEvent event((float)(delta / 120), 0);
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         case WM_MOUSEWHEEL:
         {
             short delta = GET_WHEEL_DELTA_WPARAM(wParam);
             MouseScrolledEvent event(0, (float)(delta / 120));
-            data->EventCallback(event);
+            m_Data->EventCallback(event);
             break;
         }
         default:

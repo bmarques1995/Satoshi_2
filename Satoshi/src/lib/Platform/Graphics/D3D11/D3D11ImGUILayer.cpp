@@ -16,8 +16,8 @@ Satoshi::D3D11ImGUILayer::~D3D11ImGUILayer()
 
 void Satoshi::D3D11ImGUILayer::OnAttach()
 {
-	D3D11ImGUIData data = std::any_cast<D3D11ImGUIData>(Application::GetInstance()->GetContext()->GetImGUIData());
-	ImGui_ImplDX11_Init(data.Device, data.DeviceContext);
+	D3D11ImGUIData m_Data = std::any_cast<D3D11ImGUIData>(Application::GetInstance()->GetContext()->GetImGUIData());
+	ImGui_ImplDX11_Init(m_Data.Device, m_Data.DeviceContext);
 }
 
 void Satoshi::D3D11ImGUILayer::OnDetach()

@@ -13,3 +13,9 @@
 [submodule "Satoshi/vendor/nlohmann_json"]
 	path = Satoshi/vendor/nlohmann_json
 	url = https://github.com/nlohmann/json.git
+[submodule "Satoshi/vendor/vulkan/vulkan_headers"]
+	path = Satoshi/vendor/vulkan/vulkan_headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "Satoshi/vendor/vulkan/vulkan_loader"]
+	path = Satoshi/vendor/vulkan/vulkan_loader
+	url = https://github.com/KhronosGroup/Vulkan-Loader.git
