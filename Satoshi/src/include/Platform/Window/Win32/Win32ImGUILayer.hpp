@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #ifndef WIN32_IMGUI_LAYER_HPP
 #define WIN32_IMGUI_LAYER_HPP
 
@@ -25,3 +27,5 @@ namespace Satoshi
 
 
 #endif //IMGUI_LAYER_HPP
+
+#endif //ST_PLATFORM_WINDOWS

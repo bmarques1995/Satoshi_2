@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #include "Platform/Window/Win32/Win32ImGUILayer.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_opengl3.h"
@@ -45,3 +47,5 @@ void Satoshi::Win32ImGUILayer::EndFrame()
 {
 	
 }
+
+#endif

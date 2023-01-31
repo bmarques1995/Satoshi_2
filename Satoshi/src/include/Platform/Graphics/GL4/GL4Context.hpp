@@ -3,7 +3,9 @@
 
 #include "Satoshi/Renderer/GraphicsContext.hpp"
 
+#ifdef ST_PLATFORM_WINDOWS
 #include <glad/wgl.h>
+#endif
 
 namespace Satoshi
 {
@@ -22,10 +24,11 @@ namespace Satoshi
         float m_ClearColor[4];
 
         std::string m_GLSLImGUIVersion;
-
+#ifdef ST_PLATFORM_WINDOWS
         HDC m_HDC;
         HGLRC m_HRC;
         PFNWGLSWAPINTERVALEXTPROC SwapIntervalEXT;
+#endif
     };
 }
 

@@ -1,10 +1,6 @@
 #include "Satoshi/ImGUI/ImGUILayer.hpp"
 #include "imgui.h"
-#include "backends/imgui_impl_opengl3.h"
-#include "backends/imgui_impl_win32.h"
-
 #include <Satoshi/Core/Application.hpp>
-#include <windows.h>
 
 Satoshi::ImGUILayer::ImGUILayer() :
 	Layer("ImGUI Layer")

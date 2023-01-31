@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #ifndef D3D11_CONTEXT_HPP
 #define D3D11_CONTEXT_HPP
 
@@ -42,4 +44,6 @@ namespace Satoshi
 }
 
 
-#endif //GL4_CONTEXT_HPP
+#endif //D3D11_CONTEXT_HPP
+
+#endif //ST_PLATFORM_WINDOWS

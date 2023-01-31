@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #ifndef D3D11_IMGUI_LAYER_HPP
 #define D3D11_IMGUI_LAYER_HPP
 
@@ -27,3 +29,5 @@ namespace Satoshi
 
 
 #endif //D3D11_IMGUI_LAYER_HPP
+
+#endif //ST_PLATFORM_WINDOWS

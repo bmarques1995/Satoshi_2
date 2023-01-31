@@ -9,6 +9,7 @@ Satoshi::GL4Context::GL4Context()
     m_ClearColor[2] = .3f;
     m_ClearColor[3] = 1.0f;
 
+#ifdef ST_PLATFORM_WINDOWS
     m_HDC = GetDC(std::any_cast<HWND>(Application::GetInstance()->GetWindow()->GetNativeWindow()));
     assert(m_HDC != nullptr);
     // Set the pixel format for the device context:
@@ -51,19 +52,24 @@ Satoshi::GL4Context::GL4Context()
     // Glad Loader!
     assert(gladLoaderLoadGL());
     m_GLSLImGUIVersion = "#version 410";
+#endif
 }
 
 Satoshi::GL4Context::~GL4Context()
 {
+#ifdef ST_PLATFORM_WINDOWS
     wglDeleteContext(m_HRC);
     ReleaseDC(std::any_cast<HWND>(Application::GetInstance()->GetWindow()->GetNativeWindow()), m_HDC);
+#endif
 }
 
 void Satoshi::GL4Context::Present()
 {
+#ifdef ST_PLATFORM_WINDOWS
     if (SwapIntervalEXT)
         SwapIntervalEXT(1);
     SwapBuffers(m_HDC);
+#endif
 }
 
 void Satoshi::GL4Context::Update()

@@ -8,9 +8,11 @@ namespace Satoshi
     enum class GRAPHICS_API
     { 
         GL4 = 1,
-        D3D11,
         VK,
+#ifdef ST_PLATFORM_WINDOWS
+        D3D11,
         D3D12
+#endif
     };
 
 	class RendererAPI

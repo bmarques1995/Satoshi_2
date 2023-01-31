@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #include "Platform/Graphics/D3D11/D3D11ImGUILayer.hpp"
 #include "imgui.h"
 #include "backends/imgui_impl_dx11.h"
@@ -40,3 +42,5 @@ void Satoshi::D3D11ImGUILayer::EndFrame()
 {
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
+
+#endif
