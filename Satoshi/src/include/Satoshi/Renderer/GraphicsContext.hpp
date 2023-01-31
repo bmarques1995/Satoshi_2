@@ -3,6 +3,7 @@
 
 #include <stpch.hpp>
 #include "Satoshi/Core/Core.hpp"
+#include "Satoshi/Renderer/RendererAPI.hpp"
 
 namespace Satoshi
 {
@@ -16,6 +17,8 @@ namespace Satoshi
         virtual void SetClearColor(float r, float g, float b, float a) = 0;
 
         virtual std::any GetImGUIData() = 0;
+
+        static GraphicsContext* Create(GRAPHICS_API api);
     };
 }
 

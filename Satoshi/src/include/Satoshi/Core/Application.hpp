@@ -11,11 +11,10 @@
 
 #include "LayerStack.hpp"
 #include "Satoshi/ImGUI/ImGUILayer.hpp"
-#include "Platform/Window/Win32/Win32ImGUILayer.hpp"
-#include "Platform/Graphics/GL4/GL4ImGUILayer.hpp"
-#include "Platform/Graphics/D3D11/D3D11ImGUILayer.hpp"
-#include "Platform/Graphics/GL4/GL4Context.hpp"
-#include "Platform/Graphics/D3D11/D3D11Context.hpp"
+#include "Satoshi/Renderer/GraphicsContext.hpp"
+#include "Satoshi/Renderer/RendererAPI.hpp"
+#include "Satoshi/ImGUI/ContextImGUILayer.hpp"
+#include "Satoshi/ImGUI/WindowImGUILayer.hpp"
 
 namespace Satoshi
 {
@@ -47,6 +46,8 @@ namespace Satoshi
         ImGUILayer m_ImGUILayer;
         std::unique_ptr<WindowImGUILayer> m_WindowLayer;
         std::unique_ptr<ContextImGUILayer> m_ContextLayer;
+
+        GRAPHICS_API m_API;
     };
 
     Application* CreateApplication();

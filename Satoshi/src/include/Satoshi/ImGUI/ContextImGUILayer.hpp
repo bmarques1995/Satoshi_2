@@ -2,6 +2,7 @@
 #define CONTEXT_IMGUI_LAYER_HPP
 
 #include "ImGUILayer.hpp"
+#include "Satoshi/Renderer/RendererAPI.hpp"
 
 namespace Satoshi
 {
@@ -15,6 +16,8 @@ namespace Satoshi
 
         virtual void BeginFrame() = 0;
         virtual void EndFrame() = 0;
+
+        static ContextImGUILayer* Create(GRAPHICS_API api);
     };
 }
 

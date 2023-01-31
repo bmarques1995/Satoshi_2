@@ -1,3 +1,5 @@
+#ifdef ST_PLATFORM_WINDOWS
+
 #include "Platform/Graphics/D3D11/D3D11Context.hpp"
 #include <cassert>
 #include "Satoshi/Core/Application.hpp"
@@ -5,7 +7,7 @@
 Satoshi::D3D11Context::D3D11Context()
 {
     m_ClearColor[0] = 1.0f;
-    m_ClearColor[1] = .0f;
+    m_ClearColor[1] = .7f;
     m_ClearColor[2] = .3f;
     m_ClearColor[3] = 1.0f;
 
@@ -109,3 +111,5 @@ std::any Satoshi::D3D11Context::GetImGUIData()
     D3D11ImGUIData data = {m_Device.Get(), m_DeviceContext.Get()};
     return data;
 }
+
+#endif

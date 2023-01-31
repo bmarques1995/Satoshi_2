@@ -13,5 +13,8 @@
 #include <stack>
 #include <any>
 #include <utility>
+#include <map>
+#include <unordered_map>
+#include <fstream>
 
 #endif //ST_PCH_HPP

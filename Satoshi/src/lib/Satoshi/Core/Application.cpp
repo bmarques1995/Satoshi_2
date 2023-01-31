@@ -1,18 +1,23 @@
 #include "Satoshi/Core/Application.hpp"
 #include "Satoshi/Core/Console.hpp"
 #include "Satoshi/Events/ApplicationEvent.hpp"
+#include "Satoshi/Core/ApplicationStarter.hpp"
 
 Satoshi::Application* Satoshi::Application::s_Instance = nullptr;
 
 Satoshi::Application::Application()
 {
 	s_Instance = this;
+	ApplicationStarter::BuildStarter();
+	json startupJson = ApplicationStarter::GetStartupJson();
+	auto test = startupJson["GraphicsAPI"].get<std::string>();
+	m_API = RendererAPI::MatchAPIByName(test);
 	Console::Init();
 	m_Window.reset(Window::Create());
 	m_Window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-	m_WindowLayer.reset(new Win32ImGUILayer());
-	m_Context.reset(new D3D11Context());
-	m_ContextLayer.reset(new D3D11ImGUILayer());
+	m_WindowLayer.reset(WindowImGUILayer::Create());
+	m_Context.reset(GraphicsContext::Create(m_API));
+	m_ContextLayer.reset(ContextImGUILayer::Create(m_API));
 	m_ImGUILayer.OnAttach();
 	m_WindowLayer->OnAttach();
 	m_ContextLayer->OnAttach();
