@@ -93,7 +93,6 @@ void Satoshi::D3D12Context::OnResize()
 
 std::any Satoshi::D3D12Context::GetImGUIData()
 {
-	//m_SourceDescHeap;
 	D3D12ImGUIData d3d12Data;
 	d3d12Data.CommandList = m_CommandList.Get();
 	d3d12Data.NumFramesInFlight = m_FramesInFlightAmount;

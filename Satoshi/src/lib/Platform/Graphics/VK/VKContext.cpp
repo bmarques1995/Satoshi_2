@@ -399,6 +399,8 @@ void Satoshi::VKContext::CreateSwapChain()
 #if defined(DEBUG) || defined(_DEBUG) 
     m_SwapChainDetails = details;
 #endif
+    //const VkFormat requestSurfaceImageFormat[] = { VK_FORMAT_B8G8R8A8_UNORM, VK_FORMAT_R8G8B8A8_UNORM, VK_FORMAT_B8G8R8_UNORM, VK_FORMAT_R8G8B8_UNORM };
+    //const VkColorSpaceKHR requestSurfaceColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR;
     VkSurfaceFormatKHR surfaceFormat = ChooseSwapSurfaceFormat(details.formats);
     VkPresentModeKHR presentMode = ChooseSwapPresentMode(details.presentModes);
     VkExtent2D extent = ChooseSwapExtent(details.capabilities, std::any_cast<HWND>(Application::GetInstance()->GetWindow()->GetNativeWindow()));
@@ -755,7 +757,7 @@ Satoshi::VKSwapChainSupportDetails Satoshi::VKContext::QuerySwapChainSupport(VkP
 VkSurfaceFormatKHR Satoshi::VKContext::ChooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 {
     for (const auto& availableFormat : availableFormats) {
-        if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+        if (availableFormat.format == VK_FORMAT_B8G8R8A8_UNORM && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
             return availableFormat;
         }
     }
