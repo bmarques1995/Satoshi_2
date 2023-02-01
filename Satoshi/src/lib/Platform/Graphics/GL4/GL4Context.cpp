@@ -51,8 +51,12 @@ Satoshi::GL4Context::GL4Context()
     SwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
     // Glad Loader!
     assert(gladLoaderLoadGL());
-    m_GLSLImGUIVersion = "#version 410";
 #endif
+
+    m_GLSLImGUIVersion = "#version 410";
+    glEnable(GL_DEPTH_TEST);
+    glViewport(0, 0, Application::GetInstance()->GetWindow()->GetWidth(), Application::GetInstance()->GetWindow()->GetHeight());
+    glDepthRange(0.0, 1.0f);
 }
 
 Satoshi::GL4Context::~GL4Context()
@@ -72,14 +76,15 @@ void Satoshi::GL4Context::Present()
 #endif
 }
 
-void Satoshi::GL4Context::OnResize()
+void Satoshi::GL4Context::OnResize(WindowResizeEvent& e)
 {
+    glViewport(0, 0, e.GetWidth(), e.GetHeight());
 }
 
 void Satoshi::GL4Context::ClearTarget()
 {
     glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Satoshi::GL4Context::SetClearColor(float r, float g, float b, float a)

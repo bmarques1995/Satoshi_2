@@ -38,12 +38,13 @@ namespace Satoshi
     private:    
         static Application* s_Instance;
         bool OnWindowClose(WindowCloseEvent& e);
+        bool OnWindowResize(WindowResizeEvent& e);
 
         std::unique_ptr<Window> m_Window;
         std::unique_ptr<GraphicsContext> m_Context;
         LayerStack m_LayerStack;
 
-        ImGUILayer m_ImGUILayer;
+        std::unique_ptr<ImGUILayer> m_ImGUILayer;
         std::unique_ptr<WindowImGUILayer> m_WindowLayer;
         std::unique_ptr<ContextImGUILayer> m_ContextLayer;
 

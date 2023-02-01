@@ -24,7 +24,7 @@ namespace Satoshi
         virtual void EndFrame() override;
         virtual void Present() override;
 
-        virtual void OnResize() override;
+        virtual void OnResize(WindowResizeEvent& e) override;
 
         virtual std::any GetImGUIData() override;
 

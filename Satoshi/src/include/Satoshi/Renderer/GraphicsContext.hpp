@@ -3,6 +3,7 @@
 
 #include <stpch.hpp>
 #include "Satoshi/Core/Core.hpp"
+#include "Satoshi/Events/ApplicationEvent.hpp"
 #include "Satoshi/Renderer/RendererAPI.hpp"
 
 namespace Satoshi
@@ -19,7 +20,7 @@ namespace Satoshi
         virtual void EndFrame() = 0;
         virtual void Present() = 0;
 
-        virtual void OnResize() = 0;
+        virtual void OnResize(WindowResizeEvent&) = 0;
 
         virtual std::any GetImGUIData() = 0;
 

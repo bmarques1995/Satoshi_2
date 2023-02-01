@@ -55,7 +55,7 @@ namespace Satoshi
         virtual void EndFrame() override;
         virtual void Present() override;
 
-        virtual void OnResize() override;
+        virtual void OnResize(WindowResizeEvent& e) override;
 
         virtual std::any GetImGUIData() override;
     private:
@@ -72,6 +72,9 @@ namespace Satoshi
 
         void UpdateFrameContext(uint64_t* fenceValue, FrameContext** frameContext, uint32_t* backBufferIndex, uint32_t nextFrameIndex);
         void UpdateFence(FrameContext** frameContext, uint64_t* fenceValue);
+        void WaitLastFrame();
+
+        void CleanupRenderTargetView();
 
         ComPtr<ID3D12Device> m_Device;
         ComPtr<ID3D12DescriptorHeap> m_RenderTargetViewDescHeap;
@@ -83,9 +86,9 @@ namespace Satoshi
         ComPtr<ID3D12Fence> m_Fence;
         HANDLE m_FenceEvent;
         ComPtr<IDXGIAdapter1> m_Adapter;
-        ComPtr<IDXGISwapChain4> m_SwapChain;
+        ComPtr<IDXGISwapChain3> m_SwapChain;
         HANDLE m_SwapChainWaitableObject;
-        ComPtr<ID3D12Resource>* m_RenderTargetResource;
+        ID3D12Resource** m_RenderTargetResource = nullptr;
         D3D12_VIEWPORT m_Viewport;
         D3D12_RECT m_ScissorRect;
 

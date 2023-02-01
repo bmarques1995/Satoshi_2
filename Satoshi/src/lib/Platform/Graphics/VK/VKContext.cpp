@@ -35,9 +35,9 @@ Satoshi::VKContext::~VKContext()
     vkDestroyFence(m_LogicalDevice, m_Fence, nullptr);
 
     vkDestroyCommandPool(m_LogicalDevice, m_CommandPool, nullptr);;
-    CleanupFrameBuffer();
+    CleanupFramebuffers();
     vkDestroyRenderPass(m_LogicalDevice, m_RenderPass, nullptr);
-    CleanupImageView();
+    CleanupImageViews();
     CleanupSwapChain();
     vkDestroyDevice(m_LogicalDevice, nullptr);
 
@@ -112,7 +112,13 @@ void Satoshi::VKContext::Draw(uint32_t elements)
 
 void Satoshi::VKContext::NewFrame()
 {
-    vkAcquireNextImageKHR(m_LogicalDevice, m_SwapChain, UINT64_MAX, m_AvailableSemaphore, VK_NULL_HANDLE, &m_CurrentFrame.ImageIndex);
+    VkResult result = vkAcquireNextImageKHR(m_LogicalDevice, m_SwapChain, UINT64_MAX, m_AvailableSemaphore, VK_NULL_HANDLE, &m_CurrentFrame.ImageIndex);
+
+    if (result == VK_ERROR_OUT_OF_DATE_KHR)
+    {
+        RecreateSwapchain();
+        result = vkAcquireNextImageKHR(m_LogicalDevice, m_SwapChain, UINT64_MAX, m_AvailableSemaphore, VK_NULL_HANDLE, &m_CurrentFrame.ImageIndex);
+    }
 
     vkResetCommandBuffer(m_CommandBuffer, 0);
 }
@@ -159,8 +165,9 @@ void Satoshi::VKContext::Present()
     vkQueuePresentKHR(m_PresentQueue, &presentInfo);
 }
 
-void Satoshi::VKContext::OnResize()
+void Satoshi::VKContext::OnResize(WindowResizeEvent& e)
 {
+    
 }
 
 std::any Satoshi::VKContext::GetImGUIData()
@@ -618,18 +625,31 @@ void Satoshi::VKContext::CleanupSwapChain()
     vkDestroySwapchainKHR(m_LogicalDevice, m_SwapChain, nullptr);
 }
 
-void Satoshi::VKContext::CleanupImageView()
+void Satoshi::VKContext::CleanupImageViews()
 {
     for (size_t i = 0; i < m_SwapChainImageViews.size(); i++) {
         vkDestroyImageView(m_LogicalDevice, m_SwapChainImageViews[i], nullptr);
     }
 }
 
-void Satoshi::VKContext::CleanupFrameBuffer()
+void Satoshi::VKContext::CleanupFramebuffers()
 {
     for (size_t i = 0; i < m_SwapChainFramebuffers.size(); i++) {
         vkDestroyFramebuffer(m_LogicalDevice, m_SwapChainFramebuffers[i], nullptr);
     }
+}
+
+void Satoshi::VKContext::RecreateSwapchain()
+{
+    vkDeviceWaitIdle(m_LogicalDevice);
+
+    CleanupFramebuffers();
+    CleanupImageViews();
+    CleanupSwapChain();
+
+    CreateSwapChain();
+    CreateImageViews();
+    CreateFramebuffers();
 }
 
 void Satoshi::VKContext::CreateViewport()

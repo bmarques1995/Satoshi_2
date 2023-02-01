@@ -33,19 +33,25 @@ namespace Satoshi
         virtual void EndFrame() override;
         virtual void Present() override;
 
-        virtual void OnResize() override;
+        virtual void OnResize(WindowResizeEvent& e) override;
 
         virtual std::any GetImGUIData() override;
     private:
+        void CreateDeviceAndSwapchain();
+        void CreateAdapter();
+        void CreateRenderTarget();
+        void CreateViewport(uint32_t width, uint32_t height);
+
         float m_ClearColor[4];
 
         ComPtr<ID3D11Device> m_Device;
         ComPtr<ID3D11DeviceContext> m_DeviceContext;
-        ComPtr<IDXGISwapChain3> m_SwapChain;
+        ComPtr<IDXGISwapChain> m_SwapChain;
         ComPtr<IDXGIAdapter1> m_Adapter;
         ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
 
         D3D11_VIEWPORT m_Viewport;
+        D3D11_RECT m_ScissorRect;
     };
 }
 

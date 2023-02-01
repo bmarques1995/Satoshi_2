@@ -2,6 +2,7 @@
 
 #include "Platform/Graphics/D3D12/D3D12Context.hpp"
 #include "Satoshi/Core/Application.hpp"
+#include "Satoshi/Core/Console.hpp"
 
 Satoshi::D3D12Context::D3D12Context(uint32_t numBackBuffers, uint32_t numFramesInFlight) :
 	m_BackBuffersAmount(numBackBuffers), m_FramesInFlightAmount(numFramesInFlight)
@@ -10,6 +11,8 @@ Satoshi::D3D12Context::D3D12Context(uint32_t numBackBuffers, uint32_t numFramesI
 	m_ClearColor[1] = 140.0f / 255.0f;
 	m_ClearColor[2] = .0f;
 	m_ClearColor[3] = 1.0f;
+
+	m_RenderTargetResource = new ID3D12Resource*[m_BackBuffersAmount];
 
 	CreateDevice();
 	CreateHeapDescriptor();
@@ -24,9 +27,10 @@ Satoshi::D3D12Context::D3D12Context(uint32_t numBackBuffers, uint32_t numFramesI
 
 Satoshi::D3D12Context::~D3D12Context()
 {
-	delete[] m_RenderTargetResource;
+	CleanupRenderTargetView();
 	delete[] m_FrameContext;
 	delete[] m_RenderTargetDescriptor;
+	delete[] m_RenderTargetResource;
 }
 
 void Satoshi::D3D12Context::ClearTarget()
@@ -48,7 +52,7 @@ void Satoshi::D3D12Context::ReceiveCommands()
 {
 	m_CurrentFrame.Barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
 	m_CurrentFrame.Barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-	m_CurrentFrame.Barrier.Transition.pResource = m_RenderTargetResource[m_CurrentFrame.BackBufferIndex].Get();
+	m_CurrentFrame.Barrier.Transition.pResource = m_RenderTargetResource[m_CurrentFrame.BackBufferIndex];
 	m_CurrentFrame.Barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 	m_CurrentFrame.Barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
 	m_CurrentFrame.Barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET;
@@ -87,8 +91,14 @@ void Satoshi::D3D12Context::Present()
 	m_SwapChain->Present(1, 0);
 }
 
-void Satoshi::D3D12Context::OnResize()
+void Satoshi::D3D12Context::OnResize(WindowResizeEvent& e)
 {
+	WaitLastFrame();
+	CleanupRenderTargetView();
+	HRESULT result = m_SwapChain->ResizeBuffers(0, e.GetWidth(), e.GetHeight(), DXGI_FORMAT_UNKNOWN, DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT);
+	Console::Log("Max swapchain {0}", DXGI_MAX_SWAP_CHAIN_BUFFERS);
+	assert(SUCCEEDED(result) && "Failed to resize swapchain.");
+	CreateRenderTargetView();
 }
 
 std::any Satoshi::D3D12Context::GetImGUIData()
@@ -233,33 +243,10 @@ void Satoshi::D3D12Context::CreateSwapChain(HWND windowHandle)
 
 	UINT dxgiFactoryFlags = 0;
 
-#if defined (_DEBUG) || defined(DEBUG)
-	//#if 0
-	ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
-	if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
-	{
-		dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
-
-		dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
-		dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
-
-		DXGI_INFO_QUEUE_MESSAGE_ID hide[] =
-		{
-			80 /* IDXGISwapChain::GetContainingOutput: The swapchain's adapter does not control the output on which the swapchain's window resides. */,
-		};
-		DXGI_INFO_QUEUE_FILTER filter = {};
-		filter.DenyList.NumIDs = static_cast<UINT>(sizeof(hide) / sizeof(DXGI_INFO_QUEUE_MESSAGE_ID));
-		filter.DenyList.pIDList = hide;
-		dxgiInfoQueue->AddStorageFilterEntries(DXGI_DEBUG_DXGI, &filter);
-	}
-
-#endif
-
-
 
 	IDXGIFactory4* dxgiFactory = nullptr;
 	IDXGISwapChain1* swapChainTemp = nullptr;
-	hr = CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&dxgiFactory));
+	hr = CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory));
 	assert(hr == S_OK);
 	hr = dxgiFactory->CreateSwapChainForHwnd(m_CommandQueue.Get(), windowHandle, &swapChainDesc, nullptr, nullptr, &swapChainTemp);
 	assert(hr == S_OK);
@@ -277,7 +264,7 @@ void Satoshi::D3D12Context::CreateSwapChain(HWND windowHandle)
 
 void Satoshi::D3D12Context::CreateRenderTargetView()
 {
-	m_RenderTargetResource = new ComPtr<ID3D12Resource>[m_BackBuffersAmount];
+	
 
 	for (uint32_t i = 0; i < m_BackBuffersAmount; i++)
 	{
@@ -324,6 +311,34 @@ void Satoshi::D3D12Context::UpdateFence(FrameContext** frameContext, uint64_t* f
 	m_CommandQueue->Signal(m_Fence.Get(), *fenceValue);
 	m_FenceLastSignaledValue = *fenceValue;
 	(*frameContext)->FenceValue = *fenceValue;
+}
+
+void Satoshi::D3D12Context::WaitLastFrame()
+{
+	FrameContext* frameCtx = &m_FrameContext[m_FrameIndex % m_FramesInFlightAmount];
+
+	UINT64 fenceValue = frameCtx->FenceValue;
+	if (fenceValue == 0)
+		return; // No fence was signaled
+
+	frameCtx->FenceValue = 0;
+	if (m_Fence->GetCompletedValue() >= fenceValue)
+		return;
+
+	m_Fence->SetEventOnCompletion(fenceValue, m_FenceEvent);
+	WaitForSingleObject(m_FenceEvent, INFINITE);
+}
+
+void Satoshi::D3D12Context::CleanupRenderTargetView()
+{
+	WaitLastFrame();
+
+	for (UINT i = 0; i < m_BackBuffersAmount; i++)
+		if (m_RenderTargetResource[i]) 
+		{ 
+			m_RenderTargetResource[i]->Release();
+			m_RenderTargetResource[i] = nullptr;
+		}
 }
 
 #endif // ST_PLATFORM_WINDOWS
